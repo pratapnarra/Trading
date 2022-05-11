@@ -117,12 +117,38 @@ public class HomeScreen extends JFrame {
 		}
 	}
 	
+	class BuyListener implements ActionListener{
+		
+		String company;
+		int price;
+		long revenue;
+		
+		BuyListener(String c, long re,int p){
+			this.company = c;
+			this.price = p;
+			this.revenue = re;
+		}
+		
+		public void actionPerformed(ActionEvent event) {
+			
+		JFrame f2 = new Buy(HomeScreen.this.username, 
+				 HomeScreen.this.fname,HomeScreen.this.lname,this.company,this.price,this.revenue );
+			f2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 	      f2.setVisible(true);   
+	 	      f2.setBounds(10,10,300,300);
+			
+			
+		}
+	}
+	
 	public JPanel stockCard(String c, long rev, int pri) {
 		JPanel panel =new JPanel();
 		JLabel company = new JLabel(c);
 		JLabel revenue = new JLabel("Last Year Revenue: "+rev);
 		JLabel price = new JLabel("Price: "+ pri +" $");
 		JButton buy = new JButton("BUY");
+		
+		buy.addActionListener(new BuyListener(c, rev,pri));
 		
 		panel.add(company,BorderLayout.CENTER);
 		panel.add(revenue);
