@@ -20,6 +20,7 @@ public class HomeScreen extends JFrame {
 	public String lname;
 	private JButton myport;
 	private JButton logout;
+	private JButton wallet;
 	  
 	
 	public HomeScreen(String uname, String f, String l) {
@@ -49,11 +50,17 @@ public class HomeScreen extends JFrame {
 		
 		logout = new JButton("Logout");
 		logout.addActionListener(new LogoutListener());
+		
+		wallet = new JButton("My Wallet");
+		wallet.addActionListener(new WalletListener());
+		
+		
 		sampleField = new JLabel("Welcome to the Stock Market " + this.fname);
 		JPanel m = new JPanel();
-		m.setLayout(new GridLayout(1, 2));
+		m.setLayout(new GridLayout(1, 3));
 		m.add(myport);
 		m.add(logout);
+		m.add(wallet);
 		
 	    add(sampleField, BorderLayout.CENTER);
 	    JPanel p =new JPanel();
@@ -97,6 +104,17 @@ public class HomeScreen extends JFrame {
 			
 		}
 		
+	}
+	
+	class WalletListener implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
+			JFrame f1 = new Wallet(HomeScreen.this.username);
+			f1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	 	      f1.setVisible(true);   
+	 	      f1.setBounds(10,10,300,300);
+			
+			
+		}
 	}
 	
 	public JPanel stockCard(String c, long rev, int pri) {
