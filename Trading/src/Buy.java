@@ -35,21 +35,24 @@ public class Buy extends JFrame implements ActionListener {
    String company;
    String firstname;
    String lastname;
-   int stockprice;
-   long revenue;
+   float stockprice;
+   float changemonth;
+   float changeyear;
+   
     
     
     private Connection connection;
  
  
-    Buy(String uname,String fname, String lname, String comp, int sprice, long rev)
+    Buy(String uname,String fname, String lname, String comp, float sprice, float c30, float cyear)
     { 
     	this.username = uname;
     	this.firstname = fname;
     	this.lastname = lname;
     	this.company = comp;
     	this.stockprice = sprice;
-    	this.revenue = rev;
+    	this.changemonth = c30;
+    	this.changeyear = cyear;
     	companyLabel = new JLabel(company);
        //Calling methods inside constructor.
     	
@@ -101,7 +104,7 @@ public class Buy extends JFrame implements ActionListener {
     	
     	    
             int numberofstocks = (int) nstocks.getValue();
-            int wallet =0;
+            float wallet =0;
             
             
             ResultSet resultSet = null;
@@ -113,7 +116,7 @@ public class Buy extends JFrame implements ActionListener {
   			  
   			  resultSet = stmt.executeQuery();
   			while (resultSet.next())
-  			wallet = resultSet.getInt(1);
+  			wallet = resultSet.getFloat(1);
   			
   			if (wallet >= numberofstocks * stockprice ) {
   				
@@ -124,12 +127,12 @@ public class Buy extends JFrame implements ActionListener {
   				stmt2.setString(2,this.lastname);
   				stmt2.setString(3,this.company);
   				stmt2.setInt(4, numberofstocks);
-  				stmt2.setInt(5, this.stockprice);
-  				stmt2.setInt(6, this.stockprice);
+  				stmt2.setFloat(5, this.stockprice);
+  				stmt2.setFloat(6, this.stockprice);
   				stmt2.executeUpdate();
   				
   				PreparedStatement stmt3=connection.prepareStatement("update Users set wallet = wallet - ? where Username = ?");
-            	stmt3.setInt(1, (numberofstocks * stockprice));
+            	stmt3.setFloat(1, (numberofstocks * stockprice));
             	stmt3.setString(2,this.username);  
     			stmt3.executeUpdate();
     			

@@ -25,6 +25,7 @@ public class Login extends JFrame implements ActionListener {
     JButton loginButton=new JButton("LOGIN");
     JButton resetButton=new JButton("RESET");
     JCheckBox showPassword=new JCheckBox("Show Password");
+    JButton signupButton = new JButton("SIGNUP");
     
     private Connection connection;
  
@@ -61,6 +62,7 @@ public class Login extends JFrame implements ActionListener {
        showPassword.setBounds(150,250,150,30);
        loginButton.setBounds(50,300,100,30);
        resetButton.setBounds(200,300,100,30);
+       signupButton.setBounds(120,300,60,30);
  
  
    }
@@ -74,11 +76,13 @@ public class Login extends JFrame implements ActionListener {
        container.add(showPassword);
        container.add(loginButton);
        container.add(resetButton);
+       container.add(signupButton);
    }
    public void addActionEvent() {
        loginButton.addActionListener(this);
        resetButton.addActionListener(this);
        showPassword.addActionListener(this);
+       signupButton.addActionListener(this);
    }
  
  
@@ -135,7 +139,15 @@ public class Login extends JFrame implements ActionListener {
             } else {
                 passwordField.setEchoChar('*');
             }
-        }    
+        }  
+        
+        if (e.getSource() == signupButton) {
+        	Signup frame = new Signup();
+            //set NewUser frame visible
+             frame.setVisible(true);
+        }
+        
+        
  
     }
     

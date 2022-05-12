@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 public class Wallet extends JFrame implements ActionListener  {
 
 	Container container=getContentPane();
+	JLabel balanceLabel;
     JLabel amtLabel=new JLabel("Enter Amount");
     JTextField amtTextField=new JTextField();
     JButton addButton=new JButton("ADD");
@@ -31,14 +32,25 @@ public class Wallet extends JFrame implements ActionListener  {
     {
        //Calling methods inside constructor.
     	this.username = uname;
+    	ResultSet resultSet = null;
+    	int wallet = 0;
 		try {
 			  connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/tradingapp","root","");//Establishing connection
 			  System.out.println("Connected With the database successfully");
+			  
+			  
+			  PreparedStatement stmt=connection.prepareStatement("select wallet from Users where Username = ?"); 
+          	stmt.setString(1,this.username);  
+			  
+			  resultSet = stmt.executeQuery();
+			while (resultSet.next())
+			wallet = resultSet.getInt(1);
 			  
 			  } catch (SQLException e) {
 			  	
 			  System.out.println(e);
 			  }
+		balanceLabel = new JLabel("Current Balance: " + String.valueOf(wallet)+ "$");
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
@@ -53,7 +65,9 @@ public class Wallet extends JFrame implements ActionListener  {
    {
        //Setting location and Size of each components using setBounds() method.
        amtLabel.setBounds(30,150,100,30);
+       
        amtTextField.setBounds(130,150,150,30);
+       balanceLabel.setBounds(30,200,150,30);
        addButton.setBounds(180,200,100,30);
  
  
@@ -63,6 +77,7 @@ public class Wallet extends JFrame implements ActionListener  {
       //Adding each components to the Container
        container.add(amtLabel);
        container.add(amtTextField);
+       container.add(balanceLabel);
        container.add(addButton);
        
    }
@@ -81,9 +96,9 @@ public class Wallet extends JFrame implements ActionListener  {
     	
         if (e.getSource() == addButton) {
         	
-            int amt;
+            float amt;
             
-            amt= Integer.parseInt(amtTextField.getText()) ;
+            amt= Float.parseFloat(amtTextField.getText()) ;
             System.out.println(amt);
             
             
@@ -92,7 +107,7 @@ public class Wallet extends JFrame implements ActionListener  {
             try {
             	//statement = connection.createStatement();
             	PreparedStatement stmt=connection.prepareStatement("update Users set wallet = wallet + ? where Username = ?");
-            	stmt.setInt(1, amt);
+            	stmt.setFloat(1, amt);
             	stmt.setString(2,this.username);  
   			  
   			  stmt.executeUpdate();

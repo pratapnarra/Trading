@@ -3,10 +3,28 @@ import java.sql.Connection;
 import java.io.IOException;
 import java.net.URI;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+//import java.net.MalformedURL.Exception;
+import java.net.URL;
+import java.net. URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+//import org.apache.http.*;h
+import java.util.Iterator;
+import java.util.Map;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+  
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
 
 import java.sql.*;
  
@@ -14,21 +32,42 @@ public class testing {
  
 public static void main(String[] args) {
 	
-	OkHttpClient client = new OkHttpClient();
+	try{
+	HttpRequest request = HttpRequest.newBuilder()
+			.uri(URI.create("https://latest-stock-price.p.rapidapi.com/any"))
+			.header("X-RapidAPI-Host", "latest-stock-price.p.rapidapi.com")
+			.header("X-RapidAPI-Key", "f549209ac6msh0ecfa32ed6b5664p1eebbdjsnda43503037cc")
+			.method("GET", HttpRequest.BodyPublishers.noBody())
+			.build();
+	HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+	//System.out.println(response.body());
 
-	Request request = new Request.Builder()
-		.url("https://alpha-vantage.p.rapidapi.com/query?interval=5min&function=TIME_SERIES_INTRADAY&symbol=MSFT&datatype=json&output_size=compact")
-		.get()
-		.addHeader("X-RapidAPI-Host", "alpha-vantage.p.rapidapi.com")
-		.addHeader("X-RapidAPI-Key", "d4258678bbmsh2473abe176be803p1b9bafjsncdddd9dd4a93")
-		.build();
-
-	try {
-		Response response = client.newCall(request).execute();
-		System.out.println(response);
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	//Object obj = new JSONParser().parse(new FileReader("JSONExample.json"));
+    
+    // typecasting obj to JSONObject
+    //JSONObject jo = (JSONObject) obj;
+	
+	
+//	response.
+//	
+    try (PrintWriter out = new PrintWriter(new FileWriter("test.json"))) {
+        out.write(response.body());
+        out.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    Object obj = new JSONParser().parse(new FileReader("test.json"));
+    JSONArray ja = (JSONArray) obj;
+    Iterator<JSONObject> iterator = ja.iterator();
+    while(iterator.hasNext() ) {
+    	
+        System.out.println(iterator.next().get("symbol"));
+     }
+    
+    
+	} catch(Exception ex) {
+		System.out.println(ex);
 	}
 	
 }
