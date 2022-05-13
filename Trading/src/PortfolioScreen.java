@@ -1,4 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +20,7 @@ private String username;
 private Connection connection;
 public String fname;
 public String lname;
+public JButton cancelButton = new JButton("RETURN TO HOMESCREEN");
 	
 	
 	public PortfolioScreen(String uname, String f, String l) {
@@ -36,9 +40,17 @@ public String lname;
 		this.fname = f;
 		this.lname = l;
 		sampleField = new JLabel(this.fname +  "'s Portfolio");
-	    add(sampleField, BorderLayout.CENTER);
+		sampleField.setFont(new Font("Serif", Font.BOLD, 18));
+	    
+		cancelButton.addActionListener(new CancelButtonListener());
+		cancelButton.setBounds(100,0,100,30);
+		 JPanel p1 = new JPanel();
+		 p1.add(sampleField, BorderLayout.NORTH );
+	    
+	    
 	    JPanel p =new JPanel();
-		p.setLayout(new GridLayout(3, 1));
+		p.setLayout(new GridLayout(20, 1));
+		
 		
 		 ResultSet resultSet = null;
          Statement statement = null;
@@ -61,20 +73,36 @@ public String lname;
 //		p.add(companyCard("Meta", 450, 380));
 //		p.add(companyCard("Microsoft", 400, 450));
 		
-		add(p,BorderLayout.SOUTH);
+        add(p1,BorderLayout.NORTH);
+        JScrollPane scrollPane = new JScrollPane(p,   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setPreferredSize(new Dimension(700, 650));
+ 		add(scrollPane,BorderLayout.CENTER);
+ 		add(cancelButton,BorderLayout.SOUTH );
 		
 	}
 	
 	public JPanel companyCard(String c,int nstocks, float buying_price, float current_price) {
+		
+		float n = ((current_price/buying_price) - 1)*100;
 		JPanel panel =new JPanel();
 		JLabel company = new JLabel(c);
-		JLabel boughtat = new JLabel("Bought at: "+buying_price+"$");
-		JLabel current = new JLabel("Current: "+ current_price +"$");
-		JLabel stocks = new JLabel("Number of Stocks: "+ nstocks );
-		JLabel net = new JLabel("Net: "+ ( ((float)current_price/buying_price) - 1.0)*100 +" %");
+		company.setForeground(Color.blue);
+		JLabel boughtat = new JLabel("<html>" + "<B>" + "Bought at: " + "</B>" +buying_price+"INR"+ "</html>");
+		JLabel current = new JLabel("<html>"+ "<B>" +"Current: " + "</B>"+ current_price +"INR"+ "</html>");
+		JLabel stocks = new JLabel("<html>"+ "<B>" +"Number of Stocks: " + "</B>"+ nstocks + "</html>");
+		JLabel net = new JLabel("<html>"+ "<B>" +"Net: " + "</B>"+ String.format("%.2f", n) +" %"+ "</html>");
 		JButton sell = new JButton("SELL");
 		
+		if (n> 0){
+			net.setForeground(Color.GREEN.darker());
+		}
+		if (n<0) {
+			net.setForeground(Color.red);
+		}
+		
+		
 		sell.addActionListener(new SellListener(c,nstocks,buying_price, current_price));
+		
 		
 		panel.add(company,BorderLayout.CENTER);
 		panel.add(boughtat);
@@ -145,6 +173,15 @@ public String lname;
 			dispose(); //Destroy the JFrame object
 			
 			
+		}
+		
+	}
+	
+	
+	public class CancelButtonListener implements ActionListener{
+		public void actionPerformed(ActionEvent event) {
+			setVisible(false); //you can't see me!
+			dispose(); //Destroy the JFrame object
 		}
 		
 	}

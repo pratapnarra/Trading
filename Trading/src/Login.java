@@ -32,6 +32,8 @@ public class Login extends JFrame implements ActionListener {
  
     Login()
     {
+    	
+    	webscrap w = new webscrap();
        //Calling methods inside constructor.
     	
 		try {
@@ -60,9 +62,9 @@ public class Login extends JFrame implements ActionListener {
        userTextField.setBounds(150,150,150,30);
        passwordField.setBounds(150,220,150,30);
        showPassword.setBounds(150,250,150,30);
-       loginButton.setBounds(50,300,100,30);
-       resetButton.setBounds(200,300,100,30);
-       signupButton.setBounds(120,300,60,30);
+       loginButton.setBounds(20,300,80,30);
+       resetButton.setBounds(250,300,80,30);
+       signupButton.setBounds(130,300,80,30);
  
  
    }
@@ -113,7 +115,7 @@ public class Login extends JFrame implements ActionListener {
   				JFrame frame1 = new HomeScreen(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3));
   	 	      frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	 	      frame1.setVisible(true);   
-  	 	      frame1.setBounds(10,10,500,500);
+  	 	      frame1.setBounds(10,10,500,700);
   			}
   				
   			else
@@ -145,6 +147,8 @@ public class Login extends JFrame implements ActionListener {
         	Signup frame = new Signup();
             //set NewUser frame visible
              frame.setVisible(true);
+             frame.setBounds(10,10,370,400);
+             
         }
         
         

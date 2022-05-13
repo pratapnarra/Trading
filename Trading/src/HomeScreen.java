@@ -1,4 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -56,15 +59,26 @@ public class HomeScreen extends JFrame {
 		
 		
 		sampleField = new JLabel("Welcome to the Stock Market " + this.fname);
+		sampleField.setFont(new Font("Serif", Font.BOLD, 18));
 		JPanel m = new JPanel();
 		m.setLayout(new GridLayout(1, 3));
 		m.add(myport);
 		m.add(logout);
 		m.add(wallet);
 		
-	    add(sampleField, BorderLayout.CENTER);
+	    //add(sampleField, BorderLayout.CENTER);
+	    
+	    
+	    JPanel p1 = new JPanel();
+	    p1.add(sampleField, BorderLayout.NORTH );
+	    
+	    
+	    	
 	    JPanel p =new JPanel();
-		p.setLayout(new GridLayout(3, 1));
+		p.setLayout(new GridLayout(40, 1));
+		
+		
+		
 		
 		 try {
 				while (resultSet.next())
@@ -81,7 +95,10 @@ public class HomeScreen extends JFrame {
 		//p.add(stockCard("Meta", 1000000, 380));
 		//p.add(stockCard("Microsoft", 900000, 450));
 		add(m,BorderLayout.NORTH);
-		add(p,BorderLayout.SOUTH);
+		JScrollPane scrollPane = new JScrollPane(p,   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	    scrollPane.setPreferredSize(new Dimension(500, 650));
+		p1.add(scrollPane,BorderLayout.CENTER);
+		add(p1,BorderLayout.CENTER);
 		
 	}
 	
@@ -92,7 +109,7 @@ public class HomeScreen extends JFrame {
     	   JFrame frame1 = new PortfolioScreen(HomeScreen.this.username,HomeScreen.this.fname, HomeScreen.this.lname );
 	 	      frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	 	      frame1.setVisible(true);   
-	 	      frame1.setBounds(10,10,500,500);
+	 	      frame1.setBounds(10,10,800,700);
        }
     }
 	
@@ -147,16 +164,18 @@ public class HomeScreen extends JFrame {
 	public JPanel stockCard(String c, float last30 , float lastyear, float sprice  ) {
 		JPanel panel =new JPanel();
 		JLabel company = new JLabel(c);
+		company.setForeground(Color.blue);
 		JLabel change30 = new JLabel("Last 30 Days Change: "+last30);
 		JLabel changeyear = new JLabel("Last Year Change: "+lastyear);
-		JLabel price = new JLabel("Price: "+ sprice +" $");
+		JLabel price = new JLabel("Price: "+ sprice +" INR");
+		price.setFont(new Font("Serif", Font.BOLD, 14));
 		JButton buy = new JButton("BUY");
 		
 		buy.addActionListener(new BuyListener(c, last30,lastyear, sprice));
 		
 		panel.add(company,BorderLayout.CENTER);
-		panel.add(change30);
-		panel.add(changeyear);
+		//panel.add(change30);
+		//panel.add(changeyear);
 		panel.add(price);
 		panel.add(buy);
 		

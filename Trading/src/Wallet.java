@@ -23,6 +23,7 @@ public class Wallet extends JFrame implements ActionListener  {
     JLabel amtLabel=new JLabel("Enter Amount");
     JTextField amtTextField=new JTextField();
     JButton addButton=new JButton("ADD");
+    JButton cancelButton = new JButton("CANCEL");
     String username;
     
     private Connection connection;
@@ -50,7 +51,7 @@ public class Wallet extends JFrame implements ActionListener  {
 			  	
 			  System.out.println(e);
 			  }
-		balanceLabel = new JLabel("Current Balance: " + String.valueOf(wallet)+ "$");
+		balanceLabel = new JLabel("Current Balance: " + String.valueOf(wallet)+ " INR");
         setLayoutManager();
         setLocationAndSize();
         addComponentsToContainer();
@@ -67,7 +68,8 @@ public class Wallet extends JFrame implements ActionListener  {
        amtLabel.setBounds(30,150,100,30);
        
        amtTextField.setBounds(130,150,150,30);
-       balanceLabel.setBounds(30,200,150,30);
+       balanceLabel.setBounds(30,100,180,30);
+       cancelButton.setBounds(80,200,100,30);
        addButton.setBounds(180,200,100,30);
  
  
@@ -78,11 +80,13 @@ public class Wallet extends JFrame implements ActionListener  {
        container.add(amtLabel);
        container.add(amtTextField);
        container.add(balanceLabel);
+       container.add(cancelButton);
        container.add(addButton);
        
    }
    public void addActionEvent() {
        addButton.addActionListener(this);
+       cancelButton.addActionListener(this);
        
    }
  
@@ -99,7 +103,7 @@ public class Wallet extends JFrame implements ActionListener  {
             float amt;
             
             amt= Float.parseFloat(amtTextField.getText()) ;
-            System.out.println(amt);
+            
             
             
             ResultSet resultSet = null;
@@ -112,6 +116,8 @@ public class Wallet extends JFrame implements ActionListener  {
   			  
   			  stmt.executeUpdate();
   			//while (resultSet.next());
+  			  
+  			JOptionPane.showMessageDialog(null, "Successfully Added");
   			}
             catch(SQLException ex) {
             	System.out.println(ex);
@@ -122,6 +128,11 @@ public class Wallet extends JFrame implements ActionListener  {
             
            
  
+        }
+        
+        if (e.getSource() == cancelButton) {
+        	setVisible(false); //you can't see me!
+			dispose(); //Destroy the JFrame object
         }
         
        

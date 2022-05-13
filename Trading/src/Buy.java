@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,11 +28,14 @@ public class Buy extends JFrame implements ActionListener {
     
     
     JButton buyButton=new JButton("BUY");
+    JButton cancelButton = new JButton("CANCEL");
     SpinnerModel value =  new SpinnerNumberModel(1, //initial value  
                1, //minimum value  
                25, //maximum value  
                1); //step  
-   JSpinner nstocks = new JSpinner(value);  
+   JSpinner nstocks = new JSpinner(value); 
+   JLabel changeMonthLabel;
+   JLabel changeYearLabel;
    String company;
    String firstname;
    String lastname;
@@ -54,7 +58,23 @@ public class Buy extends JFrame implements ActionListener {
     	this.changemonth = c30;
     	this.changeyear = cyear;
     	companyLabel = new JLabel(company);
+    	changeMonthLabel = new JLabel("<html>" + "<B>" + "30 Day Change: " + "</B>" +this.changemonth+" %"+ "</html>");
+    	changeYearLabel = new JLabel("<html>" + "<B>" + "Year Change: " + "</B>" +this.changeyear+" %"+ "</html>");
        //Calling methods inside constructor.
+    	
+    	if (this.changemonth> 0){
+			changeMonthLabel.setForeground(Color.GREEN.darker());
+		}
+    	else {
+    		changeMonthLabel.setForeground(Color.red);
+		}
+		if (this.changeyear> 0){
+			changeYearLabel.setForeground(Color.GREEN.darker());
+		}
+		else {
+			changeYearLabel.setForeground(Color.red);
+		}
+    	
     	
 		try {
 			  connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/tradingapp","root","");//Establishing connection
@@ -77,11 +97,14 @@ public class Buy extends JFrame implements ActionListener {
    public void setLocationAndSize()
    {
        //Setting location and Size of each components using setBounds() method.
-       companyLabel.setBounds(50,150,100,30);
-       nstocks.setBounds(100,100,50,30);    
-       
-       
-       buyButton.setBounds(200,300,100,30);
+       companyLabel.setBounds(120,50,200,30);
+       changeYearLabel.setBounds(70,100,200,30);
+       changeMonthLabel.setBounds(70,150,200,30);
+       nstocks.setBounds(30,200,50,30); 
+       cancelButton.setBounds(100,200,80,30);
+//       changeMonthLabel.setBounds();
+//       changeYearLabel.setBounds(, ABORT, WIDTH, HEIGHT);
+       buyButton.setBounds(200,200,80,30);
  
  
    }
@@ -91,9 +114,13 @@ public class Buy extends JFrame implements ActionListener {
        container.add(companyLabel);
        container.add(nstocks);
        container.add(buyButton);
+       container.add(changeYearLabel);
+       container.add(changeMonthLabel);
+       container.add(cancelButton);
    }
    public void addActionEvent() {
        buyButton.addActionListener(this);
+       cancelButton.addActionListener(this);
        
    }
  
@@ -102,7 +129,7 @@ public class Buy extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     	//Coding Part of LOGIN button
     	
-    	    
+    	    if (e.getSource() == buyButton) {
             int numberofstocks = (int) nstocks.getValue();
             float wallet =0;
             
@@ -152,7 +179,12 @@ public class Buy extends JFrame implements ActionListener {
             }
             setVisible(false); //you can't see me!
 			dispose(); //Destroy the JFrame object
-			  
+    }  
+    	    
+    	    if (e.getSource() == cancelButton) {
+    	    	 setVisible(false); //you can't see me!
+    				dispose(); //Destroy the JFrame object
+    	    }
             
            
  
