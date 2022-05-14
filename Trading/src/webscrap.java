@@ -77,9 +77,25 @@ public class webscrap {
 		    			+ "lastyear,StockPrice ) "
   						+ "values(?, ?,?,?);");
   				stmt2.setString(1,j.get("identifier").toString());
-  				stmt2.setFloat(2, Float.parseFloat(j.get("perChange30d").toString()) );
-  				stmt2.setFloat(3, Float.parseFloat(j.get("perChange365d").toString()) );
-  				stmt2.setFloat(4, Float.parseFloat(j.get("lastPrice").toString()) );
+  				
+  				String d30 = j.get("perChange30d").toString();
+  				String d365 = j.get("perChange365d").toString();
+  				String lp = j.get("lastPrice").toString();
+  				
+  				if(d30.equals("-"))
+  					d30 = "1";
+  				
+  				if(d365.equals("-"))
+  					d365 = "1";
+  				
+  				if(lp.equals("-"))
+  					lp = "1";
+  				
+  				
+  				
+  				stmt2.setFloat(2, Float.parseFloat(d30) );
+  				stmt2.setFloat(3, Float.parseFloat(d365) );
+  				stmt2.setFloat(4, Float.parseFloat(lp) );
   				
   				stmt2.executeUpdate();
 		    	
